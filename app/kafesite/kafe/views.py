@@ -1,4 +1,6 @@
+from http.client import HTTPResponse
 from django.shortcuts import render
+from django.http import HttpResponse
 from .models import *
 
 # is_defoult_header
@@ -103,7 +105,8 @@ def order(request):
     return render(request, 'kafe/order.html', params)
 
 
-    
+def test(request):
+    return  HttpResponse("Hello, World!") 
 
 
 def about(request):
