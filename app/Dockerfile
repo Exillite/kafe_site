@@ -17,7 +17,6 @@ COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
 RUN apk add --upgrade python3-tkinter
-# install psycopg2 dependencies
 
 
 # copy entrypoint.sh
