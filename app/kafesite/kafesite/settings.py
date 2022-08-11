@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'kafe.apps.KafeConfig',
+    'kafesite.kafe.apps.KafeConfig',
     'django.contrib.sites',
 ]
 

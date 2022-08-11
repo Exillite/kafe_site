@@ -20,15 +20,17 @@ RUN apk add --upgrade python3-tkinter
 
 
 # copy entrypoint.sh
-COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
-RUN chmod +x /usr/src/app/entrypoint.sh
+# COPY ./entrypoint.sh .
+# RUN sed -i 's/\r$//g' /usr/src/app/kafesite/entrypoint.sh
+# RUN chmod +x /usr/src/app/entrypoint.sh
 
 
 
 # copy project
 COPY . .
 
+RUN sed -i 's/\r$//g' /usr/src/app/kafesite/entrypoint.sh
+RUN chmod +x /usr/src/app/kafesite/entrypoint.sh
 
 # # run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+ENTRYPOINT [ "/usr/src/app/entrypoint.sh" ]
