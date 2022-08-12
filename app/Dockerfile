@@ -33,4 +33,4 @@ RUN sed -i 's/\r$//g' /usr/src/app/kafesite/entrypoint.sh
 RUN chmod +x /usr/src/app/kafesite/entrypoint.sh
 
 # # run entrypoint.sh
-ENTRYPOINT [ "/usr/src/app/entrypoint.sh" ]
+ENTRYPOINT [ "/usr/src/app/kafesite/entrypoint.sh" ]
