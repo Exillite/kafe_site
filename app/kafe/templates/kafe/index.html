@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block botheader %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
     <!-- slider section -->
     <section class="slider_section ">
         <div id="customCarousel1" class="carousel slide" data-ride="carousel">
@@ -86,8 +89,8 @@
 
                     {% for el in products %}
 
-                    <div class="col-sm-6 col-lg-4 all {{el.category.slug}}">
-                        <div class="box">
+                    <div class="col-sm-6 col-lg-4 all {{el.category.slug}}" onmouseout="$(this).find('#descr').hide()" onmouseover="$(this).find('#descr').show()">
+                        <div class="box" id="cdcd">
                             <div>
                                 <div class="img-box">
                                     <img src="{{ el.photo.url }}" alt="">
@@ -96,12 +99,12 @@
                                     <h5>
                                         {{ el.name }}
                                     </h5>
-                                    <p>
+                                    <p class="idescr" id="descr">
                                         {{ el.description }}
                                     </p>
                                     <div class="options">
                                         <h6>
-                                            {{ el.price }}$
+                                            {{ el.price }}₽
                                         </h6>
                                         <a href="">
                                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
@@ -145,6 +148,16 @@
             </div>
         </div>
     </section>
+
+    
+
+    <script>
+
+        $(".idescr").each(function() {
+            $(this).hide();
+        });
+
+    </script>
 
     <!-- end food section -->
 
@@ -216,6 +229,8 @@
 
     <!-- end client section -->
     {% endif %}
+
+
 
 {% endblock %}
 

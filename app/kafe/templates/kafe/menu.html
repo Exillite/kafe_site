@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- food section -->
 
     <section class="food_section layout_padding-bottom">
@@ -29,7 +29,7 @@
 
                     {% for el in products %}
 
-                    <div class="col-sm-6 col-lg-4 all {{el.category.slug}}">
+                    <div class="col-sm-6 col-lg-4 all {{el.category.slug}}" onmouseout="$(this).find('#descr').hide()" onmouseover="$(this).find('#descr').show()">
                         <div class="box">
                             <div>
                                 <div class="img-box">
@@ -39,12 +39,12 @@
                                     <h5>
                                         {{ el.name }}
                                     </h5>
-                                    <p>
+                                    <p class="idescr" id="descr">
                                         {{ el.description }}
                                     </p>
                                     <div class="options">
                                         <h6>
-                                            {{ el.price }}$
+                                            {{ el.price }}₽
                                         </h6>
                                         <a href="">
                                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
@@ -68,7 +68,7 @@
                          c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
                           </g>
                         </g>
- 
+
                       </svg>
                                         </a>
                                     </div>
@@ -85,6 +85,35 @@
     </section>
 
     <!-- end food section -->
+    <script>
+
+        $(".idescr").each(function() {
+            $(this).hide();
+        });
+
+    </script>
+
+
+    <script>
+
+        $(document).ready(function(){
+
+            var image = document.getElementById("bgimg");
+            console.log(image);
+            var imgs = new Array(
+                {% for el in slideritsems %}
+                '{{ el.photo.url }}',
+                {% endfor %}
+                );
+
+            $('#customCarousel1').on('slide.bs.carousel', function(e){
+                console.log(e.to);
+                console.log(imgs[e.to]);
+                image.src = imgs[e.to];
+            }); 
+        });
+    </script>
+
 
 
 {% endblock %}
