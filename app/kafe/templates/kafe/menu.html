@@ -1,53 +1,50 @@
-{% extends 'kafe/base.html' %}
-{% load static %}
+{% extends 'kafe/base.html' %} {% load static %} {% block content %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!-- food section -->
 
-{% block content %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <!-- food section -->
+<section class="food_section layout_padding-bottom">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Меню
+            </h2>
+        </div>
 
-    <section class="food_section layout_padding-bottom">
-        <div class="container">
-            <div class="heading_container heading_center">
-                <h2>
-                    Меню
-                </h2>
-            </div>
+        <ul class="filters_menu">
+            <li class="active" data-filter="*">All</li>
 
-            <ul class="filters_menu">
-                <li class="active" data-filter="*">All</li>
+            {% for el in categoryes %}
 
-                {% for el in categoryes %}
+            <li data-filter=".{{ el.slug }}">{{ el.title }}</li>
 
-                <li data-filter=".{{ el.slug }}">{{ el.title }}</li>
+            {% endfor %}
 
-                {% endfor %}
+        </ul>
 
-            </ul>
+        <div class="filters-content">
+            <div class="row grid">
 
-            <div class="filters-content">
-                <div class="row grid">
+                {% for el in products %}
 
-                    {% for el in products %}
-
-                    <div class="col-sm-6 col-lg-4 all {{el.category.slug}}" onmouseout="$(this).find('#descr').hide()" onmouseover="$(this).find('#descr').show()">
-                        <div class="box">
-                            <div>
-                                <div class="img-box">
-                                    <img src="{{ el.photo.url }}" alt="">
-                                </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        {{ el.name }}
-                                    </h5>
-                                    <p class="idescr" id="descr">
-                                        {{ el.description }}
-                                    </p>
-                                    <div class="options">
-                                        <h6>
-                                            {{ el.price }}₽
-                                        </h6>
-                                        <a href="">
-                                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                <div class="col-sm-6 col-lg-4 all {{el.category.slug}}" onmouseout="$(this).find('#descr').hide(); this.style.zIndex = 0;" onmouseover="$(this).find('#descr').show(); this.style.zIndex = 500;">
+                    <div class="box">
+                        <div>
+                            <div class="img-box">
+                                <img src="{{ el.photo.url }}" alt="">
+                            </div>
+                            <div class="detail-box">
+                                <h5>
+                                    {{ el.name }}
+                                </h5>
+                                <p class="idescr" id="descr">
+                                    {{ el.description }}
+                                </p>
+                                <div class="options">
+                                    <h6>
+                                        {{ el.price }}₽
+                                    </h6>
+                                    <a onclick="addProd('{{ el.pk }}')">
+                                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                         <g>
                           <g>
                             <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
@@ -70,49 +67,110 @@
                         </g>
 
                       </svg>
-                                        </a>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    {% endfor %}
-                
                 </div>
+
+                {% endfor %}
+
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- end food section -->
-    <script>
+<!-- end food section -->
+<script>
+    $(".idescr").each(function() {
+        $(this).hide();
+    });
 
-        $(".idescr").each(function() {
-            $(this).hide();
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    function setCookie(name, value, options = {}) {
+
+        options = {
+            path: '/',
+            // при необходимости добавьте другие значения по умолчанию
+            ...options
+        };
+
+        if (options.expires instanceof Date) {
+            options.expires = options.expires.toUTCString();
+        }
+
+        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+        for (let optionKey in options) {
+            updatedCookie += "; " + optionKey;
+            let optionValue = options[optionKey];
+            if (optionValue !== true) {
+                updatedCookie += "=" + optionValue;
+            }
+        }
+
+        document.cookie = updatedCookie;
+    }
+
+    function isnotprodincard(card, prod) {
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            if (el == prod) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function addProd(el) {
+        if (getCookie("card") === undefined) {
+            setCookie('card', el + ":1", {
+                'max-age': 31536000
+            });
+            console.log("NEW");
+        } else {
+            var a = getCookie("card");
+            var crd = a.split('#');
+            if (isnotprodincard(crd, el)) {
+                setCookie('card', a + "#" + el + ":1", {
+                    'max-age': 31536000
+                });
+                console.log(crd);
+            } else {
+                console.log("!!!!!");
+                window.location.replace("/card?card=" + a);
+            }
+        }
+    }
+</script>
+
+
+<script>
+    $(document).ready(function() {
+
+        var image = document.getElementById("bgimg");
+        console.log(image);
+        var imgs = new Array({ %
+                for el in slideritsems %
+            }
+            '{{ el.photo.url }}', { % endfor %
+            }
+        );
+
+        $('#customCarousel1').on('slide.bs.carousel', function(e) {
+            console.log(e.to);
+            console.log(imgs[e.to]);
+            image.src = imgs[e.to];
         });
-
-    </script>
-
-
-    <script>
-
-        $(document).ready(function(){
-
-            var image = document.getElementById("bgimg");
-            console.log(image);
-            var imgs = new Array(
-                {% for el in slideritsems %}
-                '{{ el.photo.url }}',
-                {% endfor %}
-                );
-
-            $('#customCarousel1').on('slide.bs.carousel', function(e){
-                console.log(e.to);
-                console.log(imgs[e.to]);
-                image.src = imgs[e.to];
-            }); 
-        });
-    </script>
+    });
+</script>
 
 
 

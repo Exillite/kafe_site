@@ -1,273 +1,222 @@
 {% extends 'kafe/base.html' %} {% load static %} {% block content %}
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
 <style>
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        font-family: 'Roboto', sans-serif;
-    }
-    
-    .shopping-cart {
-        width: 750px;
-        margin: 220px auto;
-        background: #FFFFFF;
-        box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.10);
-        border-radius: 6px;
-        display: flex;
-        flex-direction: column;
-    }
-    
     .title {
-        height: 60px;
-        border-bottom: 1px solid #E1E8EE;
-        padding: 20px 30px;
-        color: #5E6977;
-        font-size: 18px;
-        font-weight: 400;
+        margin-bottom: 5vh;
     }
     
-    .item {
-        padding: 20px 30px;
-        height: 120px;
-        display: flex;
+    .card {
+        margin: auto;
+        max-width: 950px;
+        width: 90%;
+        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 1rem;
+        border: transparent;
     }
     
-    .item:nth-child(3) {
-        border-top: 1px solid #E1E8EE;
-        border-bottom: 1px solid #E1E8EE;
+    @media(max-width:767px) {
+        .card {
+            margin: 3vh auto;
+        }
     }
     
-    .buttons {
-        position: relative;
-        padding-top: 30px;
-        margin-right: 60px;
+    .cart {
+        background-color: #fff;
+        padding: 4vh 5vh;
+        border-bottom-left-radius: 1rem;
+        border-top-left-radius: 1rem;
     }
     
-    .delete-btn,
-    .like-btn {
-        display: inline-block;
-        Cursor: pointer;
+    @media(max-width:767px) {
+        .cart {
+            padding: 4vh;
+            border-bottom-left-radius: unset;
+            border-top-right-radius: 1rem;
+        }
     }
     
-    .delete-btn {
-        width: 18px;
-        height: 17px;
-        background: url("{% static 'kafe/images/delete-icn.svg' %}") no-repeat center;
+    .summary {
+        background-color: #ddd;
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        padding: 4vh;
+        color: rgb(65, 65, 65);
     }
     
-    .like-btn {
-        position: absolute;
-        top: 9px;
-        left: 15px;
-        background: url('{% static 'kafe/images/twitter-heart.png' %}');
-        width: 60px;
-        height: 60px;
-        background-size: 2900%;
+    @media(max-width:767px) {
+        .summary {
+            border-top-right-radius: unset;
+            border-bottom-left-radius: 1rem;
+        }
+    }
+    
+    .summary .col-2 {
+        padding: 0;
+    }
+    
+    .summary .col-10 {
+        padding: 0;
+    }
+    
+    .row {
+        margin: 0;
+    }
+    
+    .title b {
+        font-size: 1.5rem;
+    }
+    
+    .main {
+        margin: 0;
+        padding: 2vh 0;
+        width: 100%;
+    }
+    
+    .col-2,
+    .col {
+        padding: 0 1vh;
+    }
+    
+    a {
+        padding: 0 1vh;
+    }
+    
+    .close {
+        margin-left: auto;
+        font-size: 0.7rem;
+    }
+    
+    img {
+        width: 3.5rem;
+    }
+    
+    .back-to-shop {
+        margin-top: 4.5rem;
+    }
+    
+    h5 {
+        margin-top: 4vh;
+    }
+    
+    hr {
+        margin-top: 1.25rem;
+    }
+    
+    form {
+        padding: 2vh 0;
+    }
+    
+    select {
+        border: 1px solid rgba(0, 0, 0, 0.137);
+        padding: 1.5vh 1vh;
+        margin-bottom: 4vh;
+        outline: none;
+        width: 100%;
+        background-color: rgb(247, 247, 247);
+    }
+    
+    input {
+        border: 1px solid rgba(0, 0, 0, 0.137);
+        padding: 1vh;
+        margin-bottom: 4vh;
+        outline: none;
+        width: 100%;
+        background-color: rgb(247, 247, 247);
+    }
+    
+    input:focus::-webkit-input-placeholder {
+        color: transparent;
+    }
+    
+    .btn {
+        background-color: #000;
+        border-color: #000;
+        color: white;
+        width: 100%;
+        font-size: 0.7rem;
+        margin-top: 4vh;
+        padding: 1vh;
+        border-radius: 0;
+    }
+    
+    .btn:focus {
+        box-shadow: none;
+        outline: none;
+        box-shadow: none;
+        color: white;
+        -webkit-box-shadow: none;
+        -webkit-user-select: none;
+        transition: none;
+    }
+    
+    .btn:hover {
+        color: white;
+    }
+    
+    a {
+        color: black;
+    }
+    
+    a:hover {
+        color: black;
+        text-decoration: none;
+    }
+    
+    #code {
+        background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
         background-repeat: no-repeat;
-    }
-    
-    .is-active {
-        animation-name: animate;
-        animation-duration: .8s;
-        animation-iteration-count: 1;
-        animation-timing-function: steps(28);
-        animation-fill-mode: forwards;
-    }
-    
-    @keyframes animate {
-        0% {
-            background-position: left;
-        }
-        50% {
-            background-position: right;
-        }
-        100% {
-            background-position: right;
-        }
-    }
-    
-    .image {
-        margin-right: 50px;
-    }
-    
-    .description {
-        padding-top: 10px;
-        margin-right: 60px;
-        width: 115px;
-    }
-    
-    .description span {
-        display: block;
-        font-size: 14px;
-        color: #43484D;
-        font-weight: 400;
-    }
-    
-    .description span:first-child {
-        margin-bottom: 5px;
-    }
-    
-    .description span:last-child {
-        font-weight: 300;
-        margin-top: 8px;
-        color: #86939E;
-    }
-    
-    .quantity {
-        padding-top: 20px;
-        margin-right: 60px;
-    }
-    
-    .quantity input {
-        -webkit-appearance: none;
-        border: none;
-        text-align: center;
-        width: 32px;
-        font-size: 16px;
-        color: #43484D;
-        font-weight: 300;
-    }
-    
-    button[class*=btn] {
-        width: 30px;
-        height: 30px;
-        background-color: #E1E8EE;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-    }
-    
-    .minus-btn img {
-        margin-bottom: 3px;
-    }
-    
-    .plus-btn img {
-        margin-top: 2px;
-    }
-    
-    button:focus,
-    input:focus {
-        outline: 0;
-    }
-    
-    .total-price {
-        width: 83px;
-        padding-top: 27px;
-        text-align: center;
-        font-size: 16px;
-        color: #43484D;
-        font-weight: 300;
-    }
-    
-    @media (max-width: 800px) {
-        .shopping-cart {
-            width: 100%;
-            height: auto;
-            overflow: hidden;
-        }
-        .item {
-            height: auto;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .image img {
-            width: 50%;
-        }
-        .image,
-        .quantity,
-        .description {
-            width: 100%;
-            text-align: center;
-            margin: 6px 0;
-        }
-        .buttons {
-            margin-right: 20px;
-        }
+        background-position-x: 95%;
+        background-position-y: center;
     }
 </style>
 
 
 
-<div class="shopping-cart">
-    <!-- Title -->
-    <div class="title">
-        Корзина
+<div class="card">
+    <div class="row">
+        <div class="col-md-8 cart">
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b>Корзина</b></h4>
+                    </div>
+                </div>
+            </div>
+
+            {% for c in card %}
+            
+                <div class="row">
+                    <div class="row main align-items-center">
+                        <div class="col-2"><img class="img-fluid" src="{{ c.prd.photo.url }}"></div>
+                        <div class="col">
+
+                            <div class="row">{{ c.prd.name }}</div>
+                        </div>
+                        <div class="col">
+                            <a onclick="rmcountprd({{ c.prd.pk }}, {{ c.prd.price }})">-</a><a class="border" id="{{ c.prd.pk }}" >1</a><a onclick="addcountprd({{ c.prd.pk }}, {{ c.prd.price }})">+</a>
+                        </div>
+                        <div class="col {{ c.prd.pk }}"> 44.00 <span class="close">&#10005;</span></div>
+                    </div>
+                </div>
+            
+            {% endfor %}
+
+        </div>
+
     </div>
-
-    <!-- Товар #1 -->
-    <div class="item">
-        <div class="buttons">
-            <span class="delete-btn"></span>
-            <span class="like-btn"></span>
-        </div>
-
-        <div class="image">
-            <img src="{% static 'kafe/images/item-1.png' %}" alt="" />
-        </div>
-
-        <div class="description">
-            <span>Common Projects</span>
-            <span>Bball High</span>
-            <span>White</span>
-        </div>
-
-        <div class="quantity">
-            <button class="plus-btn" type="button" name="button">
-          <img src="{% static 'kafe/images/plus.svg' %}" alt="" />
-        </button>
-            <input type="text" name="name" value="1">
-            <button class="minus-btn" type="button" name="button">
-          <img src="{% static 'kafe/images/minus.svg' %}" alt="" />
-        </button>
-        </div>
-
-        <div class="total-price">$549</div>
-    </div>
-
 
 </div>
-<script src="https://code.jquery.com/jquery-2.2.4.js" charset="utf-8"></script>
-
-<script type="text/javascript">
-    $('.minus-btn').on('click', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $input = $this.closest('div').find('input');
-        var value = parseInt($input.val());
-
-        if (value > 1) {
-            value = value - 1;
-        } else {
-            value = 0;
-        }
-
-        $input.val(value);
-
-    });
-
-    $('.plus-btn').on('click', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $input = $this.closest('div').find('input');
-        var value = parseInt($input.val());
-
-        if (value < 100) {
-            value = value + 1;
-        } else {
-            value = 100;
-        }
-
-        $input.val(value);
-    });
-
-    $('.like-btn').on('click', function() {
-        $(this).toggleClass('is-active');
-    });
-</script>
-
-
-
-
-{% endblock %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br> {% endblock %}

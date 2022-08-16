@@ -68,6 +68,16 @@ def card(request):
         'work_days': SiteSettings.objects.get(key='work_days').context,
     }
 
+
+    card_get = request.GET.get("card")
+    card_list = card_get.split('#')
+    card = []
+
+    for el in card_list:
+        prd_id, col = el.split(':')
+        card.append({ 'prd': Product.objects.get(id=int(prd_id)), 'col': int(col) })
+
+
     params = {
         'siteset': siteset,
         'is_sub_page': True,
@@ -75,8 +85,10 @@ def card(request):
         'slideritsems': Sales.objects.filter(is_published=True),
         'categoryes': Category.objects.filter(is_published=True),
         'products': Product.objects.filter(is_published=True),
+        'card': card,
     }
     params['slideritsems_range'] = range(len(params['slideritsems']))
+
     return render(request, 'kafe/card.html', params)
 
 
