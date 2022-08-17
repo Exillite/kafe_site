@@ -137,9 +137,9 @@
             console.log("NEW");
         } else {
             var a = getCookie("card");
-            var crd = a.split('#');
+            var crd = a.split('!');
             if (isnotprodincard(crd, el)) {
-                setCookie('card', a + "#" + el + ":1", {
+                setCookie('card', a + "!" + el + ":1", {
                     'max-age': 31536000
                 });
                 console.log(crd);

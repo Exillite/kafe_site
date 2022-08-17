@@ -70,7 +70,7 @@ def card(request):
 
 
     card_get = request.GET.get("card")
-    card_list = card_get.split('#')
+    card_list = card_get.split('!')
     card = []
 
     for el in card_list:
@@ -86,6 +86,7 @@ def card(request):
         'categoryes': Category.objects.filter(is_published=True),
         'products': Product.objects.filter(is_published=True),
         'card': card,
+        'card_len': card_get,
     }
     params['slideritsems_range'] = range(len(params['slideritsems']))
 

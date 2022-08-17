@@ -173,6 +173,8 @@
     }
 </style>
 
+<script>
+</script>
 
 
 <div class="card">
@@ -186,26 +188,24 @@
                 </div>
             </div>
 
-            {% for c in card %}
-            
-                <div class="row">
-                    <div class="row main align-items-center">
-                        <div class="col-2"><img class="img-fluid" src="{{ c.prd.photo.url }}"></div>
-                        <div class="col">
+            {{ card_len }} {% for c in card %}
 
-                            <div class="row">{{ c.prd.name }}</div>
-                        </div>
-                        <div class="col">
-                            <a onclick="rmcountprd({{ c.prd.pk }}, {{ c.prd.price }})">-</a><a class="border" id="{{ c.prd.pk }}" >1</a><a onclick="addcountprd({{ c.prd.pk }}, {{ c.prd.price }})">+</a>
-                        </div>
-                        <div class="col {{ c.prd.pk }}"> 44.00 <span class="close">&#10005;</span></div>
+            <div class="row unselectable">
+                <div class="row main align-items-center">
+                    <div class="col-2"><img class="img-fluid" src="{{ c.prd.photo.url }}"></div>
+                    <div class="col">
+
+                        <div class="row">{{ c.prd.name }}</div>
                     </div>
+                    <div class="col unselectable">
+                        <a class="unselectable" onclick="rmcountprd('{{ c.prd.pk }}', {{ c.prd.price }})">-</a><a class="border unselectable" id="{{ c.prd.pk }}">1</a><a class="unselectable" onclick="addcountprd({{ c.prd.pk }}, {{ c.prd.price }})">+</a>
+                    </div>
+                    <div class="col {{ c.prd.pk }}"> {{ c.prd.price }}₽ <span class="close">&#10005;</span></div>
                 </div>
-            
+            </div>
+
             {% endfor %}
-
         </div>
-
     </div>
 
 </div>
@@ -219,4 +219,71 @@
 <br>
 <br>
 <br>
+
+<script>
+    function addcolcooky(id, delta) {
+        var a = getCookie("card");
+        var card = a.split('!');
+
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            if (el == id) {
+                col = card[i].split(':')[0];
+                card[i] = id + ":" + (parseInt(card[i].split(':')[1]) + delta);
+                var s = "";
+                for (let j = 0; j < card.length; j++) {
+                    s += card[j];
+                }
+                console.log(s);
+                setCookie('card', s, {
+                    'max-age': 31536000
+                });
+                break;
+            }
+        }
+    }
+
+    function rmcountprd(id, prd_price) {
+        var col_a = $("!" + id);
+        var prise_a = $("." + id);
+
+        var col = parseInt(col_a.text());
+        var price = parseInt(prise_a.text());
+        if (col != 1) {
+            col_a.text(col - 1);
+            prise_a.text((price - prd_price).toString() + "₽");
+            addcolcooky(id, -1);
+        }
+    }
+
+    function addcountprd(id, prd_price) {
+        var col_a = $("#" + id);
+        var prise_a = $("." + id);
+
+        var col = parseInt(col_a.text());
+        var price = parseInt(prise_a.text());
+        if (col < 99) {
+            col_a.text(col + 1);
+            prise_a.text((price + prd_price).toString() + "₽");
+            addcolcooky(id, 1);
+        }
+    }
+
+    function inni() {
+        console.log("!!!!!");
+        var a = getCookie("card");
+        var card = a.split('!');
+
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            col = parseInt(card[i].split(':')[1]);
+
+            $("#" + el).text(col);
+        }
+    }
+
+    inni();
+</script>
+
+
 <br> {% endblock %}
