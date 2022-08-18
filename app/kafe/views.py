@@ -70,24 +70,37 @@ def card(request):
 
 
     card_get = request.GET.get("card")
-    card_list = card_get.split('!')
-    card = []
+    if card_get != "":
+        card_list = card_get.split('s')
+        card = []
 
-    for el in card_list:
-        prd_id, col = el.split(':')
-        card.append({ 'prd': Product.objects.get(id=int(prd_id)), 'col': int(col) })
+        for el in card_list:
+            prd_id, col = el.split(':')
+            card.append({ 'prd': Product.objects.get(id=int(prd_id)), 'col': int(col) })
+        
+        params = {
+            'siteset': siteset,
+            'is_sub_page': True,
+            'is_defoult_header': True,
+            'slideritsems': Sales.objects.filter(is_published=True),
+            'categoryes': Category.objects.filter(is_published=True),
+            'products': Product.objects.filter(is_published=True),
+            'card': card,
+            'card_len': card_get,
+            'is_empty_card': False,
+        }
+    else:
+        params = {
+            'siteset': siteset,
+            'is_sub_page': True,
+            'is_defoult_header': True,
+            'slideritsems': Sales.objects.filter(is_published=True),
+            'categoryes': Category.objects.filter(is_published=True),
+            'products': Product.objects.filter(is_published=True),
+            'is_empty_card': True,
+        }
 
 
-    params = {
-        'siteset': siteset,
-        'is_sub_page': True,
-        'is_defoult_header': True,
-        'slideritsems': Sales.objects.filter(is_published=True),
-        'categoryes': Category.objects.filter(is_published=True),
-        'products': Product.objects.filter(is_published=True),
-        'card': card,
-        'card_len': card_get,
-    }
     params['slideritsems_range'] = range(len(params['slideritsems']))
 
     return render(request, 'kafe/card.html', params)
@@ -105,6 +118,8 @@ def order(request):
         'work_time': SiteSettings.objects.get(key='work_time').context,
         'work_days': SiteSettings.objects.get(key='work_days').context,
     }
+
+    
 
     params = {
         'siteset': siteset,

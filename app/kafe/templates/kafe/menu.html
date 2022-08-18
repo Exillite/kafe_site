@@ -130,16 +130,16 @@
     }
 
     function addProd(el) {
-        if (getCookie("card") === undefined) {
+        if (getCookie("card") == undefined || getCookie("card") == "") {
             setCookie('card', el + ":1", {
                 'max-age': 31536000
             });
             console.log("NEW");
         } else {
             var a = getCookie("card");
-            var crd = a.split('!');
+            var crd = a.split('s');
             if (isnotprodincard(crd, el)) {
-                setCookie('card', a + "!" + el + ":1", {
+                setCookie('card', a + "s" + el + ":1", {
                     'max-age': 31536000
                 });
                 console.log(crd);

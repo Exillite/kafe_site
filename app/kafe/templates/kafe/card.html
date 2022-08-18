@@ -89,6 +89,17 @@
         font-size: 0.7rem;
     }
     
+    .ord {
+        display: inline-block;
+        padding: 10px 55px;
+        background-color: #ffbe33;
+        color: #000000;
+        border-radius: 45px;
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+        border: none;
+    }
+    
     img {
         width: 3.5rem;
     }
@@ -180,6 +191,17 @@
 <div class="card">
     <div class="row">
         <div class="col-md-8 cart">
+            {% if is_empty_card %}
+
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b>Корзина пока пустая.</b></h4>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
             <div class="title">
                 <div class="row">
                     <div class="col">
@@ -188,7 +210,7 @@
                 </div>
             </div>
 
-            {{ card_len }} {% for c in card %}
+            {% for c in card %}
 
             <div class="row unselectable">
                 <div class="row main align-items-center">
@@ -201,11 +223,28 @@
                         <a class="unselectable" onclick="rmcountprd('{{ c.prd.pk }}', {{ c.prd.price }})">-</a><a class="border unselectable" id="{{ c.prd.pk }}">1</a><a class="unselectable" onclick="addcountprd({{ c.prd.pk }}, {{ c.prd.price }})">+</a>
                     </div>
                     <div class="col {{ c.prd.pk }}"> {{ c.prd.price }}₽ </div>
-                    <div class="col"><span class="close">&#10005;</span></div>
+                    <div class="col"><span class="close" onclick="rm_prd_from_card({{ c.prd.pk }})">&#10005;</span></div>
                 </div>
             </div>
 
             {% endfor %}
+
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b class="itog"></b></h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-box">
+                <a class="ord">Самовывоз</a>
+            </div>
+            <br>
+            <div class="btn-box">
+                <a onclick="go_order()" class="ord">Доставка</a>
+            </div>
+            {% endif %}
         </div>
     </div>
 
@@ -220,11 +259,47 @@
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
 
 <script>
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    function setCookie(name, value, options = {}) {
+
+        options = {
+            path: '/',
+            // при необходимости добавьте другие значения по умолчанию
+            ...options
+        };
+
+        if (options.expires instanceof Date) {
+            options.expires = options.expires.toUTCString();
+        }
+
+        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+        for (let optionKey in options) {
+            updatedCookie += "; " + optionKey;
+            let optionValue = options[optionKey];
+            if (optionValue !== true) {
+                updatedCookie += "=" + optionValue;
+            }
+        }
+
+        document.cookie = updatedCookie;
+    }
+
     function addcolcooky(id, delta) {
         var a = getCookie("card");
-        var card = a.split('!');
+        var card = a.split('s');
 
         for (let i = 0; i < card.length; i++) {
             el = card[i].split(':')[0];
@@ -233,7 +308,11 @@
                 card[i] = id + ":" + (parseInt(card[i].split(':')[1]) + delta);
                 var s = "";
                 for (let j = 0; j < card.length; j++) {
-                    s += card[j];
+                    if (j !== 0) {
+                        s = s + "s" + card[j];
+                    } else {
+                        s = s + card[j];
+                    }
                 }
                 console.log(s);
                 setCookie('card', s, {
@@ -255,6 +334,7 @@
             prise_a.text((price - prd_price).toString() + "₽");
             addcolcooky(id, -1);
         }
+        count_sum();
     }
 
     function addcountprd(id, prd_price) {
@@ -268,19 +348,66 @@
             prise_a.text((price + prd_price).toString() + "₽");
             addcolcooky(id, 1);
         }
+        count_sum();
+    }
+
+    function count_sum() {
+        var a = getCookie("card");
+        console.log(a);
+        var card = a.split('s');
+        var itog = 0;
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            col = parseInt(card[i].split(':')[1]);
+            var prs = parseInt($("." + el).text());
+            itog = itog + prs;
+        }
+        $(".itog").text(itog + "₽");
+    }
+
+    function rm_prd_from_card(id) {
+        var a = getCookie("card");
+        console.log(a);
+        var card = a.split('s');
+        var new_a = "";
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            col = parseInt(card[i].split(':')[1]);
+
+            if (id != el) {
+                if (new_a.length != 0) {
+                    new_a += "s" + el + ":" + col;
+                } else {
+                    new_a += el + ":" + col;
+                }
+            }
+        }
+        setCookie('card', new_a, {
+            'max-age': 31536000
+        });
+        window.location.replace("/card?card=" + new_a);
+    }
+
+    function go_order() {
+        var a = getCookie("card");
+        window.location.replace("/order?card=" + a);
     }
 
     function inni() {
         console.log("!!!!!");
         var a = getCookie("card");
-        var card = a.split('!');
-
+        console.log(a);
+        var card = a.split('s');
+        var itog = 0;
         for (let i = 0; i < card.length; i++) {
             el = card[i].split(':')[0];
             col = parseInt(card[i].split(':')[1]);
-
             $("#" + el).text(col);
+            var prs = parseInt($("." + el).text());
+            $("." + el).text(prs * col + "₽");
+            itog = itog + prs * col;
         }
+        $(".itog").text(itog + "₽");
     }
 
     inni();
