@@ -200,7 +200,8 @@
                     <div class="col unselectable">
                         <a class="unselectable" onclick="rmcountprd('{{ c.prd.pk }}', {{ c.prd.price }})">-</a><a class="border unselectable" id="{{ c.prd.pk }}">1</a><a class="unselectable" onclick="addcountprd({{ c.prd.pk }}, {{ c.prd.price }})">+</a>
                     </div>
-                    <div class="col {{ c.prd.pk }}"> {{ c.prd.price }}₽ <span class="close">&#10005;</span></div>
+                    <div class="col {{ c.prd.pk }}"> {{ c.prd.price }}₽ </div>
+                    <div class="col"><span class="close">&#10005;</span></div>
                 </div>
             </div>
 
@@ -244,7 +245,7 @@
     }
 
     function rmcountprd(id, prd_price) {
-        var col_a = $("!" + id);
+        var col_a = $("#" + id);
         var prise_a = $("." + id);
 
         var col = parseInt(col_a.text());
