@@ -115,7 +115,8 @@
     <div class="row">
         <div class="col-50 vv">
             <div class="container" id="cc">
-                <form action="/ready">
+                <form action="{% url 'ready' %}" method="post">
+                    {% csrf_token %}
 
                     <div class="row">
                         <div class="col-50">

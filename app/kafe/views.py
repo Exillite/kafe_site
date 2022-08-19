@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseNotFound
 from .models import *
+from django.views.decorators.csrf import csrf_protect
 
 # is_defoult_header
 
@@ -106,7 +107,6 @@ def card(request):
     params['slideritsems_range'] = range(len(params['slideritsems']))
 
     return render(request, 'kafe/card.html', params)
-
 
 
 def delivery_order(request):
@@ -237,12 +237,12 @@ def about(request):
     params['slideritsems_range'] = range(len(params['slideritsems']))
     return render(request, 'kafe/about.html', params)
 
-
+@csrf_protect
 def ready_order(request):
     if request.method == 'POST':
         name = request.POST["firstname"]
         phone = request.POST["phone"]
-        is_delivery = request.POST["is_delivery"]
+        isdelivery = request.POST["is_delivery"]
         card_get = request.POST["card"]
         card_list = card_get.split('s')
 
@@ -253,16 +253,16 @@ def ready_order(request):
             total_prs += prd.price
         total_prs = int(total_prs)
 
-        if is_delivery == "yes":
+        if isdelivery == "yes":
             is_d = True
             address = request.POST["address"]
             state = request.POST["state"]
             zipp = request.POST["zip"]
             total_address = f"Адрес: {address}, подъезд: {state}, этаж: {zipp}"
-            new_order = Order(is_delivery=is_d, name=name, phone=phone, price=total_prs, address=total_address, card=card_get)
+            new_order = Order(isdelivery=is_d, name=name, phone=phone, price=total_prs, address=total_address, card=card_get)
         else:
             is_d = False
-            new_order = Order(is_delivery=is_d, name=name, phone=phone, price=total_prs, card=card_get)
+            new_order = Order(isdelivery=is_d, name=name, phone=phone, price=total_prs, card=card_get)
 
         new_order.save()
 

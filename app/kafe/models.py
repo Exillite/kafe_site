@@ -47,12 +47,12 @@ class SiteSettings(models.Model):
 
 
 class Order(models.Model):
-    is_delivery = models.BooleanField()
+    isdelivery = models.BooleanField()
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
     price = models.IntegerField(blank=True)
     address = models.TextField(blank=True)
     link = models.URLField(blank=True)
     card = models.TextField()
-    is_finish = models.BooleanField(default=False)
+    isfinish = models.BooleanField(default=False)
 
