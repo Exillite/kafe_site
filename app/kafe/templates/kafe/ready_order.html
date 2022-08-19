@@ -1,0 +1,372 @@
+{% extends 'kafe/base.html' %} {% load static %} {% block content %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+<style>
+    .title {
+        margin-bottom: 5vh;
+    }
+    
+    .card {
+        margin: auto;
+        max-width: 950px;
+        width: 90%;
+        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 1rem;
+        border: transparent;
+    }
+    
+    @media(max-width:767px) {
+        .card {
+            margin: 3vh auto;
+        }
+    }
+    
+    .cart {
+        background-color: #fff;
+        padding: 4vh 5vh;
+        border-bottom-left-radius: 1rem;
+        border-top-left-radius: 1rem;
+    }
+    
+    @media(max-width:767px) {
+        .cart {
+            padding: 4vh;
+            border-bottom-left-radius: unset;
+            border-top-right-radius: 1rem;
+        }
+    }
+    
+    .summary {
+        background-color: #ddd;
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        padding: 4vh;
+        color: rgb(65, 65, 65);
+    }
+    
+    @media(max-width:767px) {
+        .summary {
+            border-top-right-radius: unset;
+            border-bottom-left-radius: 1rem;
+        }
+    }
+    
+    .summary .col-2 {
+        padding: 0;
+    }
+    
+    .summary .col-10 {
+        padding: 0;
+    }
+    
+    .row {
+        margin: 0;
+    }
+    
+    .title b {
+        font-size: 1.5rem;
+    }
+    
+    .main {
+        margin: 0;
+        padding: 2vh 0;
+        width: 100%;
+    }
+    
+    .col-2,
+    .col {
+        padding: 0 1vh;
+    }
+    
+    a {
+        padding: 0 1vh;
+    }
+    
+    .close {
+        margin-left: auto;
+        font-size: 0.7rem;
+    }
+    
+    .ord {
+        display: inline-block;
+        padding: 10px 55px;
+        background-color: #ffbe33;
+        color: #000000;
+        border-radius: 45px;
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+        border: none;
+    }
+    
+    img {
+        width: 3.5rem;
+    }
+    
+    .back-to-shop {
+        margin-top: 4.5rem;
+    }
+    
+    h5 {
+        margin-top: 4vh;
+    }
+    
+    hr {
+        margin-top: 1.25rem;
+    }
+    
+    form {
+        padding: 2vh 0;
+    }
+    
+    select {
+        border: 1px solid rgba(0, 0, 0, 0.137);
+        padding: 1.5vh 1vh;
+        margin-bottom: 4vh;
+        outline: none;
+        width: 100%;
+        background-color: rgb(247, 247, 247);
+    }
+    
+    input {
+        border: 1px solid rgba(0, 0, 0, 0.137);
+        padding: 1vh;
+        margin-bottom: 4vh;
+        outline: none;
+        width: 100%;
+        background-color: rgb(247, 247, 247);
+    }
+    
+    input:focus::-webkit-input-placeholder {
+        color: transparent;
+    }
+    
+    .btn {
+        background-color: #000;
+        border-color: #000;
+        color: white;
+        width: 100%;
+        font-size: 0.7rem;
+        margin-top: 4vh;
+        padding: 1vh;
+        border-radius: 0;
+    }
+    
+    .btn:focus {
+        box-shadow: none;
+        outline: none;
+        box-shadow: none;
+        color: white;
+        -webkit-box-shadow: none;
+        -webkit-user-select: none;
+        transition: none;
+    }
+    
+    .btn:hover {
+        color: white;
+    }
+    
+    a {
+        color: black;
+    }
+    
+    a:hover {
+        color: black;
+        text-decoration: none;
+    }
+    
+    #code {
+        background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
+        background-repeat: no-repeat;
+        background-position-x: 95%;
+        background-position-y: center;
+    }
+</style>
+
+<script>
+</script>
+
+
+<div class="card">
+    <div class="row">
+        <div class="col-md-8 cart">
+
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b>Спаибо, заказ оформлен!</b></h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<script>
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    function setCookie(name, value, options = {}) {
+
+        options = {
+            path: '/',
+            // при необходимости добавьте другие значения по умолчанию
+            ...options
+        };
+
+        if (options.expires instanceof Date) {
+            options.expires = options.expires.toUTCString();
+        }
+
+        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+        for (let optionKey in options) {
+            updatedCookie += "; " + optionKey;
+            let optionValue = options[optionKey];
+            if (optionValue !== true) {
+                updatedCookie += "=" + optionValue;
+            }
+        }
+
+        document.cookie = updatedCookie;
+    }
+
+    function addcolcooky(id, delta) {
+        var a = getCookie("card");
+        var card = a.split('s');
+
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            if (el == id) {
+                col = card[i].split(':')[0];
+                card[i] = id + ":" + (parseInt(card[i].split(':')[1]) + delta);
+                var s = "";
+                for (let j = 0; j < card.length; j++) {
+                    if (j !== 0) {
+                        s = s + "s" + card[j];
+                    } else {
+                        s = s + card[j];
+                    }
+                }
+                console.log(s);
+                setCookie('card', s, {
+                    'max-age': 31536000
+                });
+                break;
+            }
+        }
+    }
+
+    function rmcountprd(id, prd_price) {
+        var col_a = $("#" + id);
+        var prise_a = $("." + id);
+
+        var col = parseInt(col_a.text());
+        var price = parseInt(prise_a.text());
+        if (col != 1) {
+            col_a.text(col - 1);
+            prise_a.text((price - prd_price).toString() + "₽");
+            addcolcooky(id, -1);
+        }
+        count_sum();
+    }
+
+    function addcountprd(id, prd_price) {
+        var col_a = $("#" + id);
+        var prise_a = $("." + id);
+
+        var col = parseInt(col_a.text());
+        var price = parseInt(prise_a.text());
+        if (col < 99) {
+            col_a.text(col + 1);
+            prise_a.text((price + prd_price).toString() + "₽");
+            addcolcooky(id, 1);
+        }
+        count_sum();
+    }
+
+    function count_sum() {
+        var a = getCookie("card");
+        console.log(a);
+        var card = a.split('s');
+        var itog = 0;
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            col = parseInt(card[i].split(':')[1]);
+            var prs = parseInt($("." + el).text());
+            itog = itog + prs;
+        }
+        $(".itog").text(itog + "₽");
+    }
+
+    function rm_prd_from_card(id) {
+        var a = getCookie("card");
+        console.log(a);
+        var card = a.split('s');
+        var new_a = "";
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            col = parseInt(card[i].split(':')[1]);
+
+            if (id != el) {
+                if (new_a.length != 0) {
+                    new_a += "s" + el + ":" + col;
+                } else {
+                    new_a += el + ":" + col;
+                }
+            }
+        }
+        setCookie('card', new_a, {
+            'max-age': 31536000
+        });
+        window.location.replace("/card?card=" + new_a);
+    }
+
+    function go_order() {
+        var a = getCookie("card");
+        window.location.replace("/order?card=" + a);
+    }
+
+    function inni() {
+        console.log("!!!!!");
+        var a = getCookie("card");
+        console.log(a);
+        var card = a.split('s');
+        var itog = 0;
+        for (let i = 0; i < card.length; i++) {
+            el = card[i].split(':')[0];
+            col = parseInt(card[i].split(':')[1]);
+            $("#" + el).text(col);
+            var prs = parseInt($("." + el).text());
+            $("." + el).text(prs * col + "₽");
+            itog = itog + prs * col;
+        }
+        $(".itog").text(itog + "₽");
+    }
+
+    inni();
+</script>
+
+
+<br> {% endblock %}

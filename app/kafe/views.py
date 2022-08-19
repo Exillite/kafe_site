@@ -1,6 +1,7 @@
 from http.client import HTTPResponse
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseNotFound
 from .models import *
 
 # is_defoult_header
@@ -107,6 +108,47 @@ def card(request):
 
 
 
+def delivery_order(request):
+    #  slideritsems categoryes products reviews
+    siteset = {
+        'kafe_description': SiteSettings.objects.get(key='kafe_description').context,
+        'kafe_description_title': SiteSettings.objects.get(key='kafe_description_title').context,
+        'kafe_description_long': SiteSettings.objects.get(key='kafe_description_long').context,
+        'phone': SiteSettings.objects.get(key='phone').context,
+        'email': SiteSettings.objects.get(key='email').context,
+        'work_time': SiteSettings.objects.get(key='work_time').context,
+        'work_days': SiteSettings.objects.get(key='work_days').context,
+    }
+
+    card_get = request.GET.get("card")
+    card_list = card_get.split('s')
+    card = []
+
+    total_prs = 0
+    for el in card_list:
+        prd_id, col = el.split(':')
+        prd = Product.objects.get(id=int(prd_id))
+        total_prs += prd.price
+        card.append({ 'prd': prd, 'col': int(col) })
+
+    total_prs = int(total_prs)
+
+    params = {
+        'siteset': siteset,
+        'is_sub_page': True,
+        'is_defoult_header': True,
+        'slideritsems': Sales.objects.filter(is_published=True),
+        'categoryes': Category.objects.filter(is_published=True),
+        'products': Product.objects.filter(is_published=True),
+        'card': card,
+        'card_len': card_get,
+        'total_prs': total_prs,
+        'total_col': len(card),
+        'card_str': card_get,
+    }
+    params['slideritsems_range'] = range(len(params['slideritsems']))
+    return render(request, 'kafe/delivery_order.html', params)
+
 def order(request):
     #  slideritsems categoryes products reviews
     siteset = {
@@ -143,10 +185,10 @@ def order(request):
         'card_len': card_get,
         'total_prs': total_prs,
         'total_col': len(card),
+        'card_str': card_get,
     }
     params['slideritsems_range'] = range(len(params['slideritsems']))
     return render(request, 'kafe/order.html', params)
-
 
 def test(request):
     s1 = SiteSettings(key='kafe_description', context='''Обычно люди приходят в Додо Пиццу, чтобы просто поесть. Наши промоутеры раздают листовки про кусочек пиццы за двадцать рублей или ещё что-то выгодное. Мы делаем это как первый шаг, чтобы познакомиться.
@@ -193,5 +235,60 @@ def about(request):
     }
     params['slideritsems_range'] = range(len(params['slideritsems']))
     return render(request, 'kafe/about.html', params)
+
+
+def ready_order(request):
+    if request.method == 'POST':
+        name = request.POST["firstname"]
+        phone = request.POST["phone"]
+        is_delivery = request.POST["is_delivery"]
+        card = request.POST["card"]
+        if is_delivery == "yes":
+            address = request.POST["address"]
+            state = request.POST["state"]
+            zipp = request.POST["zip"]
+
+        new_order = Order()
+
+        siteset = {
+            'kafe_description': SiteSettings.objects.get(key='kafe_description').context,
+            'kafe_description_title': SiteSettings.objects.get(key='kafe_description_title').context,
+            'kafe_description_long': SiteSettings.objects.get(key='kafe_description_long').context,
+            'phone': SiteSettings.objects.get(key='phone').context,
+            'email': SiteSettings.objects.get(key='email').context,
+            'work_time': SiteSettings.objects.get(key='work_time').context,
+            'work_days': SiteSettings.objects.get(key='work_days').context,
+        }
+
+        params = {
+            'siteset': siteset,
+            'is_sub_page': True,
+            'is_defoult_header': True,
+        }
+
+        return render(request, 'kafe/ready_order.html', params)
+    else:
+        return HttpResponseNotFound("Страница не найдена.")
+
+
+
+# def items(request):
+#     siteset = {
+#         'kafe_description': SiteSettings.objects.get(key='kafe_description').context,
+#         'kafe_description_title': SiteSettings.objects.get(key='kafe_description_title').context,
+#         'kafe_description_long': SiteSettings.objects.get(key='kafe_description_long').context,
+#         'phone': SiteSettings.objects.get(key='phone').context,
+#         'email': SiteSettings.objects.get(key='email').context,
+#         'work_time': SiteSettings.objects.get(key='work_time').context,
+#         'work_days': SiteSettings.objects.get(key='work_days').context,
+#     }
+
+#     params = {
+#         'siteset': siteset,
+#         'is_sub_page': True,
+#         'is_defoult_header': True,
+#     }
+
+
 
 

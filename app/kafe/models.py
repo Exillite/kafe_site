@@ -47,8 +47,11 @@ class SiteSettings(models.Model):
 
 
 class Order(models.Model):
+    is_delivery = models.BooleanField()
+    name = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
     price = models.IntegerField()
+    address = models.TextField(blank=True)
+    link = models.URLField()
     products = models.ManyToManyField(Product)
-
 

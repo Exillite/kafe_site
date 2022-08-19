@@ -7,6 +7,9 @@ urlpatterns = [
     path('menu/', menu, name='menu'),
     path('about/', about, name='about'),
     path('card/', card, name='card'),
+    path('order/', delivery_order, name='order'),
     path('order/', order, name='order'),
     path('test/', test, name='test'),
+    # path('items/', items, name='items'),
+    path('ready/', ready_order, name='ready'),
 ]
