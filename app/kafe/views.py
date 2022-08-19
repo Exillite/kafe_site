@@ -119,7 +119,18 @@ def order(request):
         'work_days': SiteSettings.objects.get(key='work_days').context,
     }
 
-    
+    card_get = request.GET.get("card")
+    card_list = card_get.split('s')
+    card = []
+
+    total_prs = 0
+    for el in card_list:
+        prd_id, col = el.split(':')
+        prd = Product.objects.get(id=int(prd_id))
+        total_prs += prd.price
+        card.append({ 'prd': prd, 'col': int(col) })
+
+    total_prs = int(total_prs)
 
     params = {
         'siteset': siteset,
@@ -128,12 +139,37 @@ def order(request):
         'slideritsems': Sales.objects.filter(is_published=True),
         'categoryes': Category.objects.filter(is_published=True),
         'products': Product.objects.filter(is_published=True),
+        'card': card,
+        'card_len': card_get,
+        'total_prs': total_prs,
+        'total_col': len(card),
     }
     params['slideritsems_range'] = range(len(params['slideritsems']))
     return render(request, 'kafe/order.html', params)
 
 
 def test(request):
+    s1 = SiteSettings(key='kafe_description', context='''Обычно люди приходят в Додо Пиццу, чтобы просто поесть. Наши промоутеры раздают листовки про кусочек пиццы за двадцать рублей или ещё что-то выгодное. Мы делаем это как первый шаг, чтобы познакомиться.
+
+Но для нас Додо — не только пицца. Это и пицца тоже, но в первую очередь это большое дело, которое вдохновляет нас, заставляет каждое утро просыпаться и с интересом продолжать работу.
+
+В чём же наш интерес? Сейчас расскажем.''')
+    s1.save()
+    s2 = SiteSettings(key='kafe_description_title', context='Мы - лучшие!')
+    s2.save()
+    s3 = SiteSettings(key='kafe_description_long', context='''Вкусные роллы, горячая лапша и закуски в Брянске!
+Мы покорим Вас вкусом, так как готовим из самых свежих продуктов, а главным ингредиентом наших блюд является любовь к своему делу!
+
+Обычно люди приходят в Додо Пиццу, чтобы просто поесть. Наши промоутеры раздают листовки про кусочек пиццы за двадцать рублей или ещё что-то выгодное. Мы делаем это как первый шаг, чтобы познакомиться. Но для нас Додо — не только пицца. Это и пицца тоже, но в первую очередь это большое дело, которое вдохновляет нас, заставляет каждое утро просыпаться и с интересом продолжать работу. В чём же наш интерес? Сейчас расскажем.''')
+    s3.save()
+    s4 = SiteSettings(key='phone', context='+7 (900) 372-99-66')
+    s4.save()
+    s5 = SiteSettings(key='email', context='example@gmail.com')
+    s5.save()
+    s6 = SiteSettings(key='work_time', context='10:30 - 22:30')
+    s6.save()
+    s7 = SiteSettings(key='work_days', context='Вторник - Воскресение')
+    s7.save()
     return  HttpResponse("Hello, World!") 
 
 

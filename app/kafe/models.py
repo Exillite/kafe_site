@@ -34,8 +34,6 @@ class Sales(models.Model):
     is_published = models.BooleanField(default=False) # Доступно ли пользователям
 
 
-
-
 class Review(models.Model):
     author_name = models.CharField(max_length=255)
     context = models.TextField()
@@ -46,4 +44,11 @@ class SiteSettings(models.Model):
     key = models.CharField(max_length=255)
     context = models.TextField()
     time_update = models.DateTimeField(auto_now=True) # Дата и время последнего редактирования  
+
+
+class Order(models.Model):
+    phone = models.CharField(max_length=255)
+    price = models.IntegerField()
+    products = models.ManyToManyField(Product)
+
 
