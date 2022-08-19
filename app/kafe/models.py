@@ -54,4 +54,5 @@ class Order(models.Model):
     address = models.TextField(blank=True)
     link = models.URLField(blank=True)
     card = models.TextField()
+    is_finish = models.BooleanField(default=False)
 

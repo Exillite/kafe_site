@@ -1,4 +1,5 @@
 from http.client import HTTPResponse
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseNotFound
@@ -313,5 +314,14 @@ def items(request, id):
         'siteset': siteset,
         'is_sub_page': True,
         'is_defoult_header': True,
+        'card': card,
+        'address': odr.address,
+        'order_id': odr.pk + 100,
     }
+
+    return render(request, 'kafe/items.html', params)
+
+def finish(request, id):
+    Order.objects.filter(pk=id).delete()
+    return redirect('about')
 
