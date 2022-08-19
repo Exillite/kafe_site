@@ -50,8 +50,8 @@ class Order(models.Model):
     is_delivery = models.BooleanField()
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
-    price = models.IntegerField()
+    price = models.IntegerField(blank=True)
     address = models.TextField(blank=True)
-    link = models.URLField()
-    products = models.ManyToManyField(Product)
+    link = models.URLField(blank=True)
+    card = models.TextField()
 
