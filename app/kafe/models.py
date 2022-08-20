@@ -4,6 +4,8 @@ from statistics import mode
 from turtle import title
 from unicodedata import name
 from django.db import models
+from django.contrib import admin
+from django.utils.html import format_html
 
 class Product(models.Model):
     class Meta:

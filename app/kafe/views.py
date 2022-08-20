@@ -3,6 +3,8 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseNotFound
+
+from kafesite.settings import HOSTT
 from .models import *
 from django.views.decorators.csrf import csrf_protect
 
@@ -134,7 +136,7 @@ def delivery_order(request):
     for el in card_list:
         prd_id, col = el.split(':')
         prd = Product.objects.get(id=int(prd_id))
-        total_prs += prd.price
+        total_prs += prd.price * int(col)
         card.append({ 'prd': prd, 'col': int(col) })
 
     total_prs = int(total_prs)
@@ -176,7 +178,7 @@ def order(request):
     for el in card_list:
         prd_id, col = el.split(':')
         prd = Product.objects.get(id=int(prd_id))
-        total_prs += prd.price
+        total_prs += prd.price *  int(col)
         card.append({ 'prd': prd, 'col': int(col) })
 
     total_prs = int(total_prs)
@@ -258,7 +260,7 @@ def ready_order(request):
         for el in card_list:
             prd_id, col = el.split(':')
             prd = Product.objects.get(id=int(prd_id))
-            total_prs += prd.price
+            total_prs += prd.price * int(col)
         total_prs = int(total_prs)
 
         if isdelivery == "yes":
@@ -272,9 +274,9 @@ def ready_order(request):
             is_d = False
             new_order = Order(isdelivery=is_d, name=name, phone=phone, price=total_prs, card=card_get)
 
-
+        h = HOSTT
         new_order.save()
-        new_order.link = f"/items/{new_order.pk}"
+        new_order.link = f"{h}/items/{new_order.pk}"
         new_order.save()
 
         siteset = {
@@ -341,5 +343,5 @@ def finish(request, id):
     odr = Order.objects.get(id=int(id - 100))
     odr.isfinish = True
     odr.save()
-    return redirect('about')
+    return redirect('/admin')
 
