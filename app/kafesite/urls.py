@@ -19,6 +19,7 @@ from django.urls import include, path
 from kafesite import settings
 
 from django.conf.urls.static import static
+admin.site.site_header = 'ХАТИМАКИ АДМИНИСТРИРОВАНИЕ'
 
 urlpatterns = [
     path('admin/', admin.site.urls),

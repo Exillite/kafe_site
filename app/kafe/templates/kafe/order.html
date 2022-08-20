@@ -122,24 +122,12 @@
                         <div class="col-50">
                             
                             <label for="fname"><i class="fa fa-user"></i> ФИО</label>
-                            <input type="text" id="fname" name="firstname" placeholder="John M. Doe">
+                            <input type="text" id="fname" name="firstname" placeholder="Иван Петров">
                             <label for="phone"><i class="fa fa-phone"></i> Телефон</label>
                             <input type="text" id="phone" name="phone" placeholder="+7 909 999 99 99">
-                            <label for="adr"><i class="fa fa-address-card-o"></i> Адрес доставки</label>
-                            <input type="text" id="adr" name="address" placeholder="542 W. 15th Street">
                             <input type="hidden" name="card" value="{{ card_str }}">
-                            <input type="hidden" name="is_delivery" value="yes">
+                            <input type="hidden" name="is_delivery" value="no">
 
-                            <div class="row">
-                                <div class="col-50">
-                                    <label for="state">Подъезд</label>
-                                    <input type="text" id="state" name="state" placeholder="3">
-                                </div>
-                                <div class="col-50">
-                                    <label for="zip">Этаж</label>
-                                    <input type="text" id="zip" name="zip" placeholder="8">
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <label>
@@ -157,6 +145,14 @@
             </div>
         </div>
     </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
 
     {% endblock %}

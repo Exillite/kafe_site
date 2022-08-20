@@ -238,11 +238,11 @@
             </div>
 
             <div class="btn-box">
-                <a class="ord">Самовывоз</a>
+                <a class="ord" onclick="go_order()">Самовывоз</a>
             </div>
             <br>
             <div class="btn-box">
-                <a onclick="go_order()" class="ord">Доставка</a>
+                <a onclick="go_delivery_order()" class="ord">Доставка</a>
             </div>
             {% endif %}
         </div>
@@ -392,6 +392,12 @@
         var a = getCookie("card");
         window.location.replace("/order?card=" + a);
     }
+
+    function go_delivery_order() {
+        var a = getCookie("card");
+        window.location.replace("/orderdelibery?card=" + a);
+    }
+    
 
     function inni() {
         console.log("!!!!!");

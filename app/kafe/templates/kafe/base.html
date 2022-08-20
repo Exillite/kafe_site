@@ -15,7 +15,7 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="{% static 'kafe/images/favicon.png' %}" type="">
 
-    <title> ЛОГО </title>
+    <title> ХАТИМАКИ </title>
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="{% static 'kafe/css/bootstrap.css' %}" />
@@ -49,7 +49,7 @@
                     <nav class="navbar navbar-expand-lg custom_nav-container ">
                         <a class="navbar-brand" href="{% url 'index' %}">
                             <span>
-            ЛОГО
+                                ХАТИМАКИ
             </span>
                         </a>
 
@@ -73,7 +73,7 @@
                                 <a href="" class="user_link">
 
                                 </a>
-                                <a class="cart_link" href="#">
+                                <a class="cart_link" onclick="go_card()">
                                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                 <g>
                     <g>
@@ -121,7 +121,7 @@
                 <nav class="navbar navbar-expand-lg custom_nav-container ">
                     <a class="navbar-brand" href="{% url 'index' %}">
                         <span>
-              ЛОГО
+                            ХАТИМАКИ
             </span>
                     </a>
 
@@ -145,7 +145,7 @@
                             <a href="" class="user_link">
 
                             </a>
-                            <a class="cart_link" href="#">
+                            <a class="cart_link" onclick="go_card()">
                                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>
@@ -206,7 +206,7 @@
                             <a href="">
                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 <span>
-                  Место
+                                    {{ siteset.address }}
                 </span>
                             </a>
                             <a href="">
@@ -226,8 +226,8 @@
                 </div>
                 <div class="col-md-4 footer-col">
                     <div class="footer_detail">
-                        <a href="" class="footer-logo">
-              ЛОГО
+                        <a href="/" class="footer-logo">
+                            ХАТИМАКИ
             </a>
                         <p>
                         </p>
@@ -292,6 +292,17 @@
     </script>
     <!-- End Google Map -->
     
+    <script>
+
+        function go_card(){
+            var a = getCookie("card");
+            if(a == undefined){
+                a = "";
+            }
+            window.location.replace("/card?card=" + a);
+        }
+
+    </script>
 
     <script>
 

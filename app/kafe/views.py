@@ -20,6 +20,8 @@ def index(request):
         'email': SiteSettings.objects.get(key='email').context,
         'work_time': SiteSettings.objects.get(key='work_time').context,
         'work_days': SiteSettings.objects.get(key='work_days').context,
+        'address': SiteSettings.objects.get(key='address').context,
+        'photo_decription': SitePhoto.objects.get(key='photo_decription').photo.url,
     }
 
     params = {
@@ -44,6 +46,7 @@ def menu(request):
         'email': SiteSettings.objects.get(key='email').context,
         'work_time': SiteSettings.objects.get(key='work_time').context,
         'work_days': SiteSettings.objects.get(key='work_days').context,
+        'address': SiteSettings.objects.get(key='address').context,
     }
 
     params = {
@@ -69,6 +72,7 @@ def card(request):
         'email': SiteSettings.objects.get(key='email').context,
         'work_time': SiteSettings.objects.get(key='work_time').context,
         'work_days': SiteSettings.objects.get(key='work_days').context,
+        'address': SiteSettings.objects.get(key='address').context,
     }
 
 
@@ -119,6 +123,7 @@ def delivery_order(request):
         'email': SiteSettings.objects.get(key='email').context,
         'work_time': SiteSettings.objects.get(key='work_time').context,
         'work_days': SiteSettings.objects.get(key='work_days').context,
+        'address': SiteSettings.objects.get(key='address').context,
     }
 
     card_get = request.GET.get("card")
@@ -160,6 +165,7 @@ def order(request):
         'email': SiteSettings.objects.get(key='email').context,
         'work_time': SiteSettings.objects.get(key='work_time').context,
         'work_days': SiteSettings.objects.get(key='work_days').context,
+        'address': SiteSettings.objects.get(key='address').context,
     }
 
     card_get = request.GET.get("card")
@@ -226,6 +232,8 @@ def about(request):
         'email': SiteSettings.objects.get(key='email').context,
         'work_time': SiteSettings.objects.get(key='work_time').context,
         'work_days': SiteSettings.objects.get(key='work_days').context,
+        'address': SiteSettings.objects.get(key='address').context,
+        'photo_long_decription': SitePhoto.objects.get(key='photo_long_decription').photo.url,
     }
 
     params = {
@@ -264,6 +272,9 @@ def ready_order(request):
             is_d = False
             new_order = Order(isdelivery=is_d, name=name, phone=phone, price=total_prs, card=card_get)
 
+
+        new_order.save()
+        new_order.link = f"/items/{new_order.pk}"
         new_order.save()
 
         siteset = {
@@ -274,6 +285,7 @@ def ready_order(request):
             'email': SiteSettings.objects.get(key='email').context,
             'work_time': SiteSettings.objects.get(key='work_time').context,
             'work_days': SiteSettings.objects.get(key='work_days').context,
+            'address': SiteSettings.objects.get(key='address').context,
         }
 
         params = {
@@ -308,6 +320,7 @@ def items(request, id):
         'email': SiteSettings.objects.get(key='email').context,
         'work_time': SiteSettings.objects.get(key='work_time').context,
         'work_days': SiteSettings.objects.get(key='work_days').context,
+        'address': SiteSettings.objects.get(key='address').context,
     }
 
     params = {
@@ -317,11 +330,16 @@ def items(request, id):
         'card': card,
         'address': odr.address,
         'order_id': odr.pk + 100,
+        'order_phone': odr.phone,
+        'order_name': odr.name,
+        'order_total': odr.price,
     }
 
     return render(request, 'kafe/items.html', params)
 
 def finish(request, id):
-    Order.objects.filter(pk=id).delete()
+    odr = Order.objects.get(id=int(id - 100))
+    odr.isfinish = True
+    odr.save()
     return redirect('about')
 

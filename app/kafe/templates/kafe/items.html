@@ -193,10 +193,13 @@
                 <div class="row">
                     <div class="col">
                         <h4><b>Заказ {{ order_id }}</b></h4>
+                        <h7><b>{{ order_name }} {{ order_phone }}</b></h3>
                     </div>
                 </div>
             </div>
 
+
+            {% if address %}
             <div class="title">
                 <div class="row">
                     <div class="col">
@@ -204,6 +207,16 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b>Самовывоз</b></h4>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
 
             {% for c in card %}
 
@@ -215,14 +228,25 @@
                         <div class="row">{{ c.prd.name }}</div>
                     </div>
                     <div class="col unselectable">
-                        <a class="unselectable">-</a><a class="border unselectable" id="{{ c.prd.pk }}">{{c.col}}</a><a class="unselectable">+</a>
+                        <a class="border unselectable" id="{{ c.prd.pk }}">{{c.col}}</a>
                     </div>
                     <div class="col {{ c.prd.pk }}"> {{ c.prd.price }}₽ </div>
-                    <div class="col"><span class="close">&#10005;</span></div>
                 </div>
             </div>
 
             {% endfor %}
+
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b>Итог: {{ order_total }}</b></h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-box">
+                <a class="ord" href="/finish/{{ order_id }}">Завершить заказ</a>
+            </div>
         </div>
     </div>
 
