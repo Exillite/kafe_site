@@ -23,6 +23,7 @@ class Product(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Дата обновления") # Дата и время последнего редактирования
     is_published = models.BooleanField(default=True, verbose_name="Доступен") # Доступно ли пользователям
     is_on_front_page = models.BooleanField(default=False, verbose_name="Находится на главной странице") # Отоброжается ли на главной странице
+    is_recomend = models.BooleanField(default=False, verbose_name="Рекомендовать в корзине")
 
     def __str__(self):
         return self.name
