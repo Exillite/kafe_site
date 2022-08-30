@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 # remuve old version
+cd ~
 cd kafe_site
 sudo docker-compose down
 cd ..
