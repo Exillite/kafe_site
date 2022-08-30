@@ -145,15 +145,27 @@
                     <label>
           <input type="checkbox" checked="checked" name="sameadr"> Соглашаюсь с условиями пользования
         </label>
-                    <input type="submit" value="Перейи к оплате" class="btn">
+                    <input type="submit" value="Оформить заказ" class="btn">
                 </form>
             </div>
         </div>
+
         <div class="col-25">
             <div id="cc">
-                <h4>Корзина <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b>{{ total_col }}</b></span></h4>
-                <hr>
-                <p>Итоговая сумма <span class="price" style="color:black"><b>{{ total_prs }}₽</b></span></p>
+              <h4>Корзина
+                <span class="price" style="color:black">
+                  <i class="fa fa-shopping-cart"></i>
+                  <b>{{ total_col }}</b>
+                </span>
+              </h4>
+
+              {% for c in card %}
+                <p><a>{{ c.prd.name }}</a> <span class="price">{{ c.col }} × {{ c.prd.price }}₽</span></p>
+              {% endfor %}
+
+              <hr>
+              <p>Итоговая сумма <span class="price" style="color:black"><b>{{ total_prs }}₽</b></span></p>
+        </div>
             </div>
         </div>
     </div>
