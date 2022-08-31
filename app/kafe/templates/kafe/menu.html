@@ -169,7 +169,7 @@
 
     function rdy (){
         is_l = true;
-        console.log(is_l);
+        console.log({{ delay }});
     }
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
@@ -194,7 +194,7 @@
         });
           
         console.log("wait");
-        delay(1200).then(() => rdy());
+        delay({{ delay }}).then(() => rdy());
     });
 </script>
 

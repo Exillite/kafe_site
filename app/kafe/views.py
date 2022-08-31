@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 
 # is_defoult_header
 
+DEL = 3000
 
 def index(request):
     #  slideritsems categoryes products reviews
@@ -58,6 +59,7 @@ def menu(request):
         'slideritsems': Sales.objects.filter(is_published=True),
         'categoryes': Category.objects.filter(is_published=True),
         'products': Product.objects.filter(is_published=True),
+        'delay': DEL,
     }
     params['slideritsems_range'] = range(len(params['slideritsems']))
     return render(request, 'kafe/menu.html', params)
@@ -344,4 +346,8 @@ def finish(request, id):
     odr.isfinish = True
     odr.save()
     return redirect('/admin')
+
+def dd(request, delay):
+    global DEL
+    DEL = delay
 
