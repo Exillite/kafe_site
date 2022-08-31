@@ -84,7 +84,7 @@
 
                     {% for el in products %}
 
-                    <div class="col-sm-6 col-lg-4 all {{el.category.slug}}" onmouseout="$(this).find('#descr').hide()" onmouseover="$(this).find('#descr').show()">
+                    <div class="col-sm-6 col-lg-4 all {{el.category.slug}}" onmouseout="mout(this)" onmouseover="mon(this)">
                         <div class="box" id="cdcd">
                             <div>
                                 <div class="img-box">
@@ -136,6 +136,7 @@
                 
                 </div>
             </div>
+            <br>
             <div class="btn-box">
                 <a href="{% url 'menu' %}">
           Увидеть больше
@@ -226,6 +227,8 @@
     {% endif %}
 
     <script>
+        var is_l = false;
+
         $(".idescr").each(function() {
             $(this).hide();
         });
@@ -235,6 +238,20 @@
                 "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
             ));
             return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+
+        function mout(obj) {
+            if (is_l) {
+                $(obj).find('#descr').hide();
+                obj.style.zIndex = 0;
+            }
+        }
+    
+        function mon(obg) {
+            if (is_l) {
+                $(obg).find('#descr').show();
+                obg.style.zIndex = 500;
+            }
         }
     
         function setCookie(name, value, options = {}) {
@@ -293,6 +310,13 @@
                 }
             }
         }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            is_l = true;
+            console.log(is_l);
+        });
     </script>
 
 

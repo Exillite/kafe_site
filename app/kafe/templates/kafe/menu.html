@@ -26,7 +26,7 @@
 
                 {% for el in products %}
 
-                <div class="col-sm-6 col-lg-4 all {{el.category.slug}}" onmouseout="$(this).find('#descr').hide(); this.style.zIndex = 0;" onmouseover="$(this).find('#descr').show(); this.style.zIndex = 500;">
+                <div class="col-sm-6 col-lg-4 all {{el.category.slug}}" onmouseout="mout(this)" onmouseover="mon(this)">
                     <div class="box">
                         <div>
                             <div class="img-box">
@@ -83,6 +83,8 @@
 
 <!-- end food section -->
 <script>
+    var is_l = false;
+
     $(".idescr").each(function() {
         $(this).hide();
     });
@@ -150,6 +152,20 @@
             }
         }
     }
+
+    function mout(obj) {
+        if (is_l) {
+            $(obj).find('#descr').hide();
+            obj.style.zIndex = 0;
+        }
+    }
+
+    function mon(obg) {
+        if (is_l) {
+            $(obg).find('#descr').show();
+            obg.style.zIndex = 500;
+        }
+    }
 </script>
 
 
@@ -158,11 +174,9 @@
 
         var image = document.getElementById("bgimg");
         console.log(image);
-        var imgs = new Array({ %
-                for el in slideritsems %
-            }
-            '{{ el.photo.url }}', { % endfor %
-            }
+        var imgs = new Array({% for el in slideritsems %}
+            '{{ el.photo.url }}',
+            {% endfor %}
         );
 
         $('#customCarousel1').on('slide.bs.carousel', function(e) {
@@ -170,6 +184,9 @@
             console.log(imgs[e.to]);
             image.src = imgs[e.to];
         });
+
+        is_l = true;
+        console.log(is_l);
     });
 </script>
 
