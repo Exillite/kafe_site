@@ -96,6 +96,7 @@ def card(request):
             'slideritsems': Sales.objects.filter(is_published=True),
             'categoryes': Category.objects.filter(is_published=True),
             'products': Product.objects.filter(is_published=True),
+            'recproducts': Product.objects.filter(is_published=True, is_recomend=True),
             'card': card,
             'card_len': card_get,
             'is_empty_card': False,

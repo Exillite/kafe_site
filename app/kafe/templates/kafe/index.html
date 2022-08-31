@@ -310,12 +310,22 @@
                 }
             }
         }
+
+
+        function rdy (){
+            is_l = true;
+            console.log({{ delay }});
+        }
+        function delay(time) {
+            return new Promise(resolve => setTimeout(resolve, time));
+        }
     </script>
 
     <script>
         $(document).ready(function() {
             is_l = true;
             console.log(is_l);
+            delay({{ delay }}).then(() => rdy());
         });
     </script>
 
