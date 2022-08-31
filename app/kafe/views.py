@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 
 # is_defoult_header
 
-DEL = 3000
+DEL = 2000
 
 def index(request):
     #  slideritsems categoryes products reviews
@@ -347,7 +347,4 @@ def finish(request, id):
     odr.save()
     return redirect('/admin')
 
-def dd(request, delay):
-    global DEL
-    DEL = delay
 

@@ -12,6 +12,5 @@ urlpatterns = [
     path('test/', test, name='test'),
     path('items/<int:id>/', items, name='items'),
     path('finish/<int:id>/', finish, name='finish'),
-    path('dd/<int:delay>/', dd),
     path('ready/', ready_order, name='ready'),
 ]
