@@ -22,7 +22,7 @@
         </ul>
 
         <div class="filters-content">
-            <div class="row grid">
+            <div id="prdkts" class="row grid">
 
                 {% for el in products %}
 
@@ -166,6 +166,14 @@
             obg.style.zIndex = 500;
         }
     }
+
+    function rdy (){
+        is_l = true;
+        console.log(is_l);
+    }
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
 </script>
 
 
@@ -184,9 +192,9 @@
             console.log(imgs[e.to]);
             image.src = imgs[e.to];
         });
-
-        is_l = true;
-        console.log(is_l);
+          
+        console.log("wait");
+        delay(1400).then(() => rdy());
     });
 </script>
 
