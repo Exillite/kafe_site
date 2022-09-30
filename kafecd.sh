@@ -9,8 +9,8 @@ rm -rf kafe_site
 
 # clone new version
 git clone https://github.com/Exillite/kafe_site.git
-cp ~/envs/kafe_site/.env.prod ~/kafe_site
-cp ~/envs/kafe_site/.env.prod.db ~/kafe_site
+cp ~/prodenv/.env.prod ~/kafe_site
+cp ~/prodenv/.env.prod.db ~/kafe_site
 
 # start new version
 cd kafe_site

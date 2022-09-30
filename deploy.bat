@@ -1,2 +1,2 @@
-scp kafecd.sh exil@kafe.exillite.xyz:~/
-ssh -t exil@kafe.exillite.xyz bash kafecd.sh
+scp kafecd.sh exil@hatimaki.shop:~/
+ssh -t exil@hatimaki.shop bash kafecd.sh
